@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "workorder",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "dueDate": {
+        "type": "string"
+      },
+      "description": {
+          "type": "string"
+      },
+      "project": {
+          "type": "string"
+      },
+      "assignedTo": {
+          "type": "string"
+      }
+    },
+    "required": [
+      "name",
+      "dueDate",
+      "project"
+    ],
+    "additionalProperties": false
+  }
+  

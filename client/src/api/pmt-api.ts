@@ -1,10 +1,7 @@
 import { apiEndpoint } from '../config'
-import { Todo } from '../types/Todo';
 import { Workorder } from '../types/Workorders'
-import { CreateTodoRequest } from '../types/CreateTodoRequest';
 import { CreateWorkorderRequest } from '../types/CreateWorkorderRequest'
 import Axios from 'axios'
-import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
 import { UpdateWorkorderRequest } from '../types/UpdateWorkorderRequest'
 
 export async function getTodos(idToken: string): Promise<Workorder[]> {

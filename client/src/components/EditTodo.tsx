@@ -100,11 +100,11 @@ export class EditTodo extends React.PureComponent<
   render() {
     return (
       <div>
-        <h1>Upload new image</h1>
+        <h1>Update work order</h1>
 
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
-            <label>File</label>
+            <label>Work order</label>
             <input
               type="text"
               defaultValue = {this.state.assignedTo}
@@ -148,7 +148,7 @@ export class EditTodo extends React.PureComponent<
           loading={this.state.updateState !== UpdateState.NoUpdate}
           type="submit"
         >
-          Upload
+          Update
         </Button>
       </div>
     )

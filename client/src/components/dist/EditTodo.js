@@ -162,10 +162,10 @@ var EditTodo = /** @class */ (function (_super) {
     };
     EditTodo.prototype.render = function () {
         return (React.createElement("div", null,
-            React.createElement("h1", null, "Upload new image"),
+            React.createElement("h1", null, "Update work order"),
             React.createElement(semantic_ui_react_1.Form, { onSubmit: this.handleSubmit },
                 React.createElement(semantic_ui_react_1.Form.Field, null,
-                    React.createElement("label", null, "File"),
+                    React.createElement("label", null, "Work order"),
                     React.createElement("input", { type: "text", defaultValue: this.state.assignedTo, placeholder: "assign to...", onChange: this.handleOwnerChange }),
                     React.createElement("input", { type: "text", defaultValue: this.state.name, placeholder: "work order name...", onChange: this.handleNameChange }),
                     React.createElement("input", { type: "text", defaultValue: this.state.description, placeholder: "work order description...", onChange: this.handleDescriptionChange }),
@@ -174,7 +174,7 @@ var EditTodo = /** @class */ (function (_super) {
     };
     EditTodo.prototype.renderButton = function () {
         return (React.createElement("div", null,
-            React.createElement(semantic_ui_react_1.Button, { loading: this.state.updateState !== UpdateState.NoUpdate, type: "submit" }, "Upload")));
+            React.createElement(semantic_ui_react_1.Button, { loading: this.state.updateState !== UpdateState.NoUpdate, type: "submit" }, "Update")));
     };
     return EditTodo;
 }(React.PureComponent));

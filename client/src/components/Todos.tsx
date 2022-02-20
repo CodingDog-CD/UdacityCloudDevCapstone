@@ -16,7 +16,6 @@ import {
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/pmt-api'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/Todo'
 import { Workorder } from '../types/Workorders'
 
 interface TodosProps {

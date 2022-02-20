@@ -3,6 +3,7 @@ import { Link, Route, Router, Switch } from 'react-router-dom'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 
 import Auth from './auth/Auth'
+import { UploadTodo } from './components/UploadTodo'
 import { EditTodo } from './components/EditTodo'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
@@ -96,6 +97,14 @@ export default class App extends Component<AppProps, AppState> {
           }}
         />
 
+        <Route
+          path="/todos/:woId/upload"
+          exact
+          render={props => {
+            return <UploadTodo {...props} auth={this.props.auth} />
+          }}
+        />
+ 
         <Route
           path="/todos/:woId/edit"
           exact

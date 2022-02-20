@@ -24,7 +24,7 @@ export class WorkorderAccess {
         console.log(`creating new work order finished`)
         return workOrderItem
     }
-    async getWorkorder(assignedTo: string): Promise<Workorder[]> {
+    async getWorkorders(assignedTo: string): Promise<Workorder[]> {
         
         const result = await this.docClient.query({
             TableName: this.workOrderTable,
@@ -38,7 +38,7 @@ export class WorkorderAccess {
         return woItems as Workorder[]
     }
 
-    async copyWorkorder(assignedTo: string, woId: string): Promise<Workorder[]> {
+    async copyWorkorder(assignedTo: string, woId: string): Promise<Workorder> {
         
         const result = await this.docClient.query({
             TableName: this.workOrderTable,
@@ -49,8 +49,8 @@ export class WorkorderAccess {
             }
         }).promise()
 
-        const woItems = result.Items
-        return woItems as Workorder[]
+        const woItem = result.Items[0]
+        return woItem as Workorder
     }
 
     async verifyDeletion(assignedTo: string, woId: string): Promise<Workorder[]> {

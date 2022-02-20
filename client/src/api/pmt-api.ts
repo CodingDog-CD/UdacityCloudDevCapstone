@@ -20,6 +20,19 @@ export async function getTodos(idToken: string): Promise<Workorder[]> {
   return response.data.items
 }
 
+export async function getTodo(idToken: string, woId: string): Promise<Workorder> {
+  console.log('Fetching work order')
+
+  const response = await Axios.get(`${apiEndpoint}/workorder/${woId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`
+    },
+  })
+  console.log('Workorder:', response.data)
+  return response.data.items
+}
+
 export async function createTodo(
   idToken: string,
   newWorkorder: CreateWorkorderRequest

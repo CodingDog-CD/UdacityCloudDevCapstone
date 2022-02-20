@@ -25,9 +25,14 @@ export async function createWorkOrder(assignedTo: string, createWorkOrderRequest
     return newWorkOrderItem
 }
 
-export async function getWorkOrder(assignedTo: string): Promise<Workorder[]>{
-    const readItem = await workorderAccess.getWorkorder(assignedTo)
+export async function getWorkOrders(assignedTo: string): Promise<Workorder[]>{
+    const readItem = await workorderAccess.getWorkorders(assignedTo)
     return readItem
+}
+
+export async function getWorkOrder(assignedTo: string, woId: string): Promise<Workorder>{
+    const specificItem = await workorderAccess.copyWorkorder(assignedTo, woId)
+    return specificItem
 }
 
 export async function removeWorkOrder(assignedTo: string, woId: string): Promise<number>{
@@ -66,11 +71,11 @@ export async function updateWorkOrder(assignedTo: string, woId: string, updateRe
                 name: updateRequest.name,
                 description: updateRequest.description,
                 dueDate: updateRequest.dueDate,
-                createdAt: copyWorkorder[0].createdAt,
+                createdAt: copyWorkorder.createdAt,
                 done: updateRequest.done,
-                project: copyWorkorder[0].project,
+                project: copyWorkorder.project,
                 assignedTo: updateRequest.assignedTo,
-                attachmentUrl: copyWorkorder[0].attachmentUrl
+                attachmentUrl: copyWorkorder.attachmentUrl
             }
             await workorderAccess.createWorkorder(newWorkOrderItem)
             const updatedItem: UpdateWorkorder = {

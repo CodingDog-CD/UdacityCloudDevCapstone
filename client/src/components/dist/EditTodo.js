@@ -53,67 +53,111 @@ exports.EditTodo = void 0;
 var React = require("react");
 var semantic_ui_react_1 = require("semantic-ui-react");
 var pmt_api_1 = require("../api/pmt-api");
-var UploadState;
-(function (UploadState) {
-    UploadState[UploadState["NoUpload"] = 0] = "NoUpload";
-    UploadState[UploadState["FetchingPresignedUrl"] = 1] = "FetchingPresignedUrl";
-    UploadState[UploadState["UploadingFile"] = 2] = "UploadingFile";
-})(UploadState || (UploadState = {}));
+var UpdateState;
+(function (UpdateState) {
+    UpdateState[UpdateState["NoUpdate"] = 0] = "NoUpdate";
+    UpdateState[UpdateState["UpdatingWO"] = 1] = "UpdatingWO";
+})(UpdateState || (UpdateState = {}));
 var EditTodo = /** @class */ (function (_super) {
     __extends(EditTodo, _super);
     function EditTodo() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.state = {
-            file: undefined,
-            uploadState: UploadState.NoUpload
+            name: '',
+            description: '',
+            dueDate: '',
+            done: false,
+            assignedTo: '',
+            updateState: UpdateState.NoUpdate
         };
-        _this.handleFileChange = function (event) {
-            var files = event.target.files;
-            if (!files)
-                return;
-            _this.setState({
-                file: files[0]
+        _this.handleOwnerChange = function (event) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.setState({ assignedTo: event.target.value });
+                return [2 /*return*/];
             });
-        };
+        }); };
+        _this.handleNameChange = function (event) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.setState({ name: event.target.value });
+                return [2 /*return*/];
+            });
+        }); };
+        _this.handleDescriptionChange = function (event) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.setState({ description: event.target.value });
+                return [2 /*return*/];
+            });
+        }); };
+        _this.handledueDateChange = function (event) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.setState({ dueDate: event.target.value });
+                return [2 /*return*/];
+            });
+        }); };
         _this.handleSubmit = function (event) { return __awaiter(_this, void 0, void 0, function () {
-            var uploadUrl, e_1;
+            var e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         event.preventDefault();
+                        this.setUpdateState(UpdateState.UpdatingWO);
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 4, 5, 6]);
-                        if (!this.state.file) {
-                            alert('File should be selected');
-                            return [2 /*return*/];
-                        }
-                        this.setUploadState(UploadState.FetchingPresignedUrl);
-                        return [4 /*yield*/, pmt_api_1.getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.woId)];
+                        _a.trys.push([1, 3, 4, 5]);
+                        return [4 /*yield*/, pmt_api_1.patchTodo(this.props.auth.getIdToken(), this.props.match.params.woId, {
+                                name: this.state.name,
+                                description: this.state.description,
+                                dueDate: this.state.dueDate,
+                                done: this.state.done,
+                                assignedTo: this.state.assignedTo
+                            })];
                     case 2:
-                        uploadUrl = _a.sent();
-                        this.setUploadState(UploadState.UploadingFile);
-                        return [4 /*yield*/, pmt_api_1.uploadFile(uploadUrl, this.state.file)];
-                    case 3:
                         _a.sent();
-                        alert('File was uploaded!');
-                        return [3 /*break*/, 6];
-                    case 4:
+                        alert('Work order was updated!');
+                        return [3 /*break*/, 5];
+                    case 3:
                         e_1 = _a.sent();
-                        alert('Could not upload a file: ' + e_1);
-                        return [3 /*break*/, 6];
-                    case 5:
-                        this.setUploadState(UploadState.NoUpload);
+                        alert('Could not update work order: ' + e_1);
+                        return [3 /*break*/, 5];
+                    case 4:
+                        this.setUpdateState(UpdateState.NoUpdate);
                         return [7 /*endfinally*/];
-                    case 6: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };
         return _this;
     }
-    EditTodo.prototype.setUploadState = function (uploadState) {
+    EditTodo.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var getWorkorder, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, pmt_api_1.getTodo(this.props.auth.getIdToken(), this.props.match.params.woId)];
+                    case 1:
+                        getWorkorder = _a.sent();
+                        this.setState({
+                            name: getWorkorder.name,
+                            description: getWorkorder.description,
+                            dueDate: getWorkorder.dueDate,
+                            done: getWorkorder.done,
+                            assignedTo: getWorkorder.assignedTo
+                        });
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_2 = _a.sent();
+                        alert("Failed to fetch workorders: " + e_2);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    EditTodo.prototype.setUpdateState = function (updateState) {
         this.setState({
-            uploadState: uploadState
+            updateState: updateState
         });
     };
     EditTodo.prototype.render = function () {
@@ -122,14 +166,15 @@ var EditTodo = /** @class */ (function (_super) {
             React.createElement(semantic_ui_react_1.Form, { onSubmit: this.handleSubmit },
                 React.createElement(semantic_ui_react_1.Form.Field, null,
                     React.createElement("label", null, "File"),
-                    React.createElement("input", { type: "file", accept: "image/*", placeholder: "Image to upload", onChange: this.handleFileChange })),
+                    React.createElement("input", { type: "text", defaultValue: this.state.assignedTo, placeholder: "assign to...", onChange: this.handleOwnerChange }),
+                    React.createElement("input", { type: "text", defaultValue: this.state.name, placeholder: "work order name...", onChange: this.handleNameChange }),
+                    React.createElement("input", { type: "text", defaultValue: this.state.description, placeholder: "work order description...", onChange: this.handleDescriptionChange }),
+                    React.createElement("input", { type: "text", defaultValue: this.state.dueDate, placeholder: "work order due Date...", onChange: this.handledueDateChange })),
                 this.renderButton())));
     };
     EditTodo.prototype.renderButton = function () {
         return (React.createElement("div", null,
-            this.state.uploadState === UploadState.FetchingPresignedUrl && React.createElement("p", null, "Uploading image metadata"),
-            this.state.uploadState === UploadState.UploadingFile && React.createElement("p", null, "Uploading file"),
-            React.createElement(semantic_ui_react_1.Button, { loading: this.state.uploadState !== UploadState.NoUpload, type: "submit" }, "Upload")));
+            React.createElement(semantic_ui_react_1.Button, { loading: this.state.updateState !== UpdateState.NoUpdate, type: "submit" }, "Upload")));
     };
     return EditTodo;
 }(React.PureComponent));

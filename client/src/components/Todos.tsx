@@ -53,8 +53,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     this.setState({ project: event.target.value })
   }
 
-  onEditButtonClick = (woId: string) => {
-    this.props.history.push(`/todos/${woId}/edit`)
+  onUploadButtonClick = (woId: string) => {
+    this.props.history.push(`/todos/${woId}/upload`)
   }
 
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -108,6 +108,10 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     }
   }
 
+  onEditButtonClick = async (woId: string) => {
+    this.props.history.push(`/todos/${woId}/edit`)
+  }
+
   async componentDidMount() {
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
@@ -158,7 +162,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
           <Input
             fluid
             actionPosition = "left"
-            placeholder = "project name..."
+            placeholder = "Add project name..."
             onChange={this.handleProjectChange}
           />
         </Grid.Column>
@@ -199,7 +203,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                   checked={todo.done}
                 />
               </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
+              <Grid.Column width={9} verticalAlign="middle">
                 {todo.name}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
@@ -209,8 +213,17 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.woId)}
+                  onClick={() => this.onUploadButtonClick(todo.woId)}
                 >
+                  <Icon name="upload" />
+                </Button>
+              </Grid.Column>
+              <Grid.Column width={1} floated="right">
+                <Button
+                  icon
+                  color="blue"
+                  onClick={() => this.onEditButtonClick(todo.woId)}
+                > 
                   <Icon name="pencil" />
                 </Button>
               </Grid.Column>

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.uploadFile = exports.getUploadUrl = exports.deleteTodo = exports.patchTodo = exports.createTodo = exports.getTodos = void 0;
+exports.uploadFile = exports.getUploadUrl = exports.deleteTodo = exports.patchTodo = exports.createTodo = exports.getTodo = exports.getTodos = void 0;
 var config_1 = require("../config");
 var axios_1 = require("axios");
 function getTodos(idToken) {
@@ -61,6 +61,28 @@ function getTodos(idToken) {
     });
 }
 exports.getTodos = getTodos;
+function getTodo(idToken, woId) {
+    return __awaiter(this, void 0, Promise, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log('Fetching work order');
+                    return [4 /*yield*/, axios_1["default"].get(config_1.apiEndpoint + "/workorder/" + woId, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': "Bearer " + idToken
+                            }
+                        })];
+                case 1:
+                    response = _a.sent();
+                    console.log('Workorder:', response.data);
+                    return [2 /*return*/, response.data.items];
+            }
+        });
+    });
+}
+exports.getTodo = getTodo;
 function createTodo(idToken, newWorkorder) {
     return __awaiter(this, void 0, Promise, function () {
         var response;

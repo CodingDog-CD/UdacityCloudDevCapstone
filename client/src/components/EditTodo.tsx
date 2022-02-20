@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/pmt-api'
+import {patchTodo, getTodo } from '../api/pmt-api'
 
-enum UploadState {
-  NoUpload,
-  FetchingPresignedUrl,
-  UploadingFile,
+enum UpdateState {
+  NoUpdate,
+  UpdatingWO,
 }
 
 interface EditTodoProps {
@@ -19,8 +18,12 @@ interface EditTodoProps {
 }
 
 interface EditTodoState {
-  file: any
-  uploadState: UploadState
+  name: string,
+  description: string,
+  dueDate: string,
+  done: boolean,
+  assignedTo: string,
+  updateState: UpdateState
 }
 
 export class EditTodo extends React.PureComponent<
@@ -28,45 +31,69 @@ export class EditTodo extends React.PureComponent<
   EditTodoState
 > {
   state: EditTodoState = {
-    file: undefined,
-    uploadState: UploadState.NoUpload
+    name: '',
+    description: '',
+    dueDate: '',
+    done: false,
+    assignedTo: '',
+    updateState: UpdateState.NoUpdate
   }
 
-  handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (!files) return
-
-    this.setState({
-      file: files[0]
-    })
-  }
-
-  handleSubmit = async (event: React.SyntheticEvent) => {
-    event.preventDefault()
-
+  async componentDidMount() {
     try {
-      if (!this.state.file) {
-        alert('File should be selected')
-        return
-      }
-
-      this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.woId)
-
-      this.setUploadState(UploadState.UploadingFile)
-      await uploadFile(uploadUrl, this.state.file)
-
-      alert('File was uploaded!')
+      const getWorkorder = await getTodo(this.props.auth.getIdToken(), this.props.match.params.woId)
+      this.setState({
+        name: getWorkorder.name,
+        description: getWorkorder.description,
+        dueDate: getWorkorder.dueDate,
+        done: getWorkorder.done,
+        assignedTo: getWorkorder.assignedTo
+      })
     } catch (e) {
-      alert('Could not upload a file: ' + e)
-    } finally {
-      this.setUploadState(UploadState.NoUpload)
+      alert(`Failed to fetch workorders: ${e}`)
     }
   }
 
-  setUploadState(uploadState: UploadState) {
+
+  handleOwnerChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      this.setState({ assignedTo: event.target.value })
+  }
+
+  handleNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ name: event.target.value })
+  }
+
+  handleDescriptionChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ description: event.target.value })
+  }
+
+  handledueDateChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ dueDate: event.target.value })
+  }
+
+  handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    this.setUpdateState(UpdateState.UpdatingWO)
+    try {
+        await patchTodo(this.props.auth.getIdToken(), this.props.match.params.woId, {
+            name: this.state.name,
+            description: this.state.description,
+            dueDate: this.state.dueDate,
+            done: this.state.done,
+            assignedTo: this.state.assignedTo
+        })
+
+      alert('Work order was updated!')
+    } catch (e) {
+      alert('Could not update work order: ' + e)
+    } finally {
+        this.setUpdateState(UpdateState.NoUpdate)
+    }
+  }
+
+  setUpdateState(updateState: UpdateState) {
     this.setState({
-      uploadState
+      updateState
     })
   }
 
@@ -79,10 +106,28 @@ export class EditTodo extends React.PureComponent<
           <Form.Field>
             <label>File</label>
             <input
-              type="file"
-              accept="image/*"
-              placeholder="Image to upload"
-              onChange={this.handleFileChange}
+              type="text"
+              defaultValue = {this.state.assignedTo}
+              placeholder = "assign to..."
+              onChange={this.handleOwnerChange}
+            />
+            <input
+              type = "text"
+              defaultValue = {this.state.name}
+              placeholder = "work order name..."
+              onChange={this.handleNameChange}
+            />
+            <input
+              type = "text"
+              defaultValue = {this.state.description}
+              placeholder = "work order description..."
+              onChange={this.handleDescriptionChange}
+            />
+            <input
+              type = "text"
+              defaultValue = {this.state.dueDate}
+              placeholder = "work order due Date..."
+              onChange={this.handledueDateChange}
             />
           </Form.Field>
 
@@ -92,14 +137,15 @@ export class EditTodo extends React.PureComponent<
     )
   }
 
+
+
   renderButton() {
 
     return (
       <div>
-        {this.state.uploadState === UploadState.FetchingPresignedUrl && <p>Uploading image metadata</p>}
-        {this.state.uploadState === UploadState.UploadingFile && <p>Uploading file</p>}
+
         <Button
-          loading={this.state.uploadState !== UploadState.NoUpload}
+          loading={this.state.updateState !== UpdateState.NoUpdate}
           type="submit"
         >
           Upload

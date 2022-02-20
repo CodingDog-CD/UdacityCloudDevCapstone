@@ -68,6 +68,21 @@ functions:
           - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.WORKORDER_TABLE}
 
+  getSpecificWorkorder:
+    handler: src/lambda/http/GetWorkorder.handler
+    events:
+      - http:
+          method: get
+          path: workorder/{woId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.WORKORDER_TABLE}
+
   deleteWorkorder:
     handler: src/lambda/http/DeleteWorkorder.handler
     events:

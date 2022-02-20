@@ -82,8 +82,8 @@ var Todos = /** @class */ (function (_super) {
         _this.handleProjectChange = function (event) {
             _this.setState({ project: event.target.value });
         };
-        _this.onEditButtonClick = function (woId) {
-            _this.props.history.push("/todos/" + woId + "/edit");
+        _this.onUploadButtonClick = function (woId) {
+            _this.props.history.push("/todos/" + woId + "/upload");
         };
         _this.onTodoCreate = function (event) { return __awaiter(_this, void 0, void 0, function () {
             var dueDate, newWorkorder, error_1;
@@ -167,6 +167,12 @@ var Todos = /** @class */ (function (_super) {
                 }
             });
         }); };
+        _this.onEditButtonClick = function (woId) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.props.history.push("/todos/" + woId + "/edit");
+                return [2 /*return*/];
+            });
+        }); };
         return _this;
     }
     Todos.prototype.componentDidMount = function () {
@@ -210,7 +216,7 @@ var Todos = /** @class */ (function (_super) {
                         onClick: this.onTodoCreate
                     }, fluid: true, actionPosition: "left", placeholder: "To change the world...", onChange: this.handleNameChange }),
                 React.createElement(semantic_ui_react_1.Input, { fluid: true, actionPosition: "left", placeholder: "Add description...", onChange: this.handleDescriptionChange }),
-                React.createElement(semantic_ui_react_1.Input, { fluid: true, actionPosition: "left", placeholder: "project name...", onChange: this.handleProjectChange })),
+                React.createElement(semantic_ui_react_1.Input, { fluid: true, actionPosition: "left", placeholder: "Add project name...", onChange: this.handleProjectChange })),
             React.createElement(semantic_ui_react_1.Grid.Column, { width: 16 },
                 React.createElement(semantic_ui_react_1.Divider, null))));
     };
@@ -231,8 +237,11 @@ var Todos = /** @class */ (function (_super) {
             return (React.createElement(semantic_ui_react_1.Grid.Row, { key: todo.woId },
                 React.createElement(semantic_ui_react_1.Grid.Column, { width: 1, verticalAlign: "middle" },
                     React.createElement(semantic_ui_react_1.Checkbox, { onChange: function () { return _this.onTodoCheck(pos); }, checked: todo.done })),
-                React.createElement(semantic_ui_react_1.Grid.Column, { width: 10, verticalAlign: "middle" }, todo.name),
+                React.createElement(semantic_ui_react_1.Grid.Column, { width: 9, verticalAlign: "middle" }, todo.name),
                 React.createElement(semantic_ui_react_1.Grid.Column, { width: 3, floated: "right" }, todo.dueDate),
+                React.createElement(semantic_ui_react_1.Grid.Column, { width: 1, floated: "right" },
+                    React.createElement(semantic_ui_react_1.Button, { icon: true, color: "blue", onClick: function () { return _this.onUploadButtonClick(todo.woId); } },
+                        React.createElement(semantic_ui_react_1.Icon, { name: "upload" }))),
                 React.createElement(semantic_ui_react_1.Grid.Column, { width: 1, floated: "right" },
                     React.createElement(semantic_ui_react_1.Button, { icon: true, color: "blue", onClick: function () { return _this.onEditButtonClick(todo.woId); } },
                         React.createElement(semantic_ui_react_1.Icon, { name: "pencil" }))),

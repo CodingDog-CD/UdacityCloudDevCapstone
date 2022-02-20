@@ -71,7 +71,8 @@ var Todos = /** @class */ (function (_super) {
             newTodoName: '',
             loadingTodos: true,
             description: '',
-            project: ''
+            project: '',
+            userId: ''
         };
         _this.handleNameChange = function (event) {
             _this.setState({ newTodoName: event.target.value });
@@ -175,9 +176,16 @@ var Todos = /** @class */ (function (_super) {
         }); };
         return _this;
     }
+    Todos.prototype.getUserId = function () {
+        var idToken = this.props.auth.getIdToken();
+        var jwt = require("jsonwebtoken");
+        var tokenPayload = jwt.decode(idToken);
+        var userId = tokenPayload.sub;
+        return userId;
+    };
     Todos.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var todos, e_1;
+            var todos, userId, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -185,9 +193,11 @@ var Todos = /** @class */ (function (_super) {
                         return [4 /*yield*/, pmt_api_1.getTodos(this.props.auth.getIdToken())];
                     case 1:
                         todos = _a.sent();
+                        userId = this.getUserId();
                         this.setState({
                             todos: todos,
-                            loadingTodos: false
+                            loadingTodos: false,
+                            userId: userId
                         });
                         return [3 /*break*/, 3];
                     case 2:
@@ -202,6 +212,9 @@ var Todos = /** @class */ (function (_super) {
     Todos.prototype.render = function () {
         return (React.createElement("div", null,
             React.createElement(semantic_ui_react_1.Header, { as: "h1" }, "TODOs"),
+            React.createElement("h2", null,
+                "Welcome! Your user ID is: ",
+                this.state.userId),
             this.renderCreateTodoInput(),
             this.renderTodos()));
     };
@@ -249,6 +262,14 @@ var Todos = /** @class */ (function (_super) {
                     React.createElement(semantic_ui_react_1.Button, { icon: true, color: "red", onClick: function () { return _this.onTodoDelete(todo.woId); } },
                         React.createElement(semantic_ui_react_1.Icon, { name: "delete" }))),
                 todo.attachmentUrl && (React.createElement(semantic_ui_react_1.Image, { src: todo.attachmentUrl, size: "small", wrapped: true })),
+                React.createElement(semantic_ui_react_1.Grid.Column, { width: 16 },
+                    React.createElement(semantic_ui_react_1.Divider, null)),
+                React.createElement(semantic_ui_react_1.Grid.Column, { width: 4, verticalAlign: "middle" },
+                    "Project: ",
+                    todo.project),
+                React.createElement(semantic_ui_react_1.Grid.Column, { width: 12, verticalAlign: "middle" },
+                    "description: ",
+                    todo.description),
                 React.createElement(semantic_ui_react_1.Grid.Column, { width: 16 },
                     React.createElement(semantic_ui_react_1.Divider, null))));
         })));

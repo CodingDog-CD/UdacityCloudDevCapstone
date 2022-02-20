@@ -4,6 +4,9 @@ plugins:
   - serverless-esbuild
   - serverless-iam-roles-per-function
 provider:
+  tracing:
+    lambda: true
+    apiGateway: true
   name: aws
   runtime: nodejs12.x
   stage: dev
@@ -47,6 +50,9 @@ functions:
           path: createworkorder
           cors: true
           authorizer: Auth
+          request:
+            schemas:
+              application/json: ${file(models/create-workorder-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -106,6 +112,9 @@ functions:
           path: workorder/{woId}
           cors: true
           authorizer: Auth
+          request:
+            schemas:
+              application/json: ${file(models/update-workorder-model.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:

@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "95591ebf-d768-4e28-b0f2-c301fc2da425",
+		"name": "PM Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetWO",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.eu-central-1.amazonaws.com/dev/workorder",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"eu-central-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"workorder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateWO",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test update 5\",\n    \"dueDate\": \"2022-02-20\",\n    \"description\": \"create one item5\",\n    \"project\": \"CapstoneCloudDev\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.eu-central-1.amazonaws.com/dev/createworkorder",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"eu-central-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"createworkorder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteWo",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.eu-central-1.amazonaws.com/dev/workorder/4494ee06-f9f5-4f98-bbbf-f6",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"eu-central-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"workorder",
+						"4494ee06-f9f5-4f98-bbbf-f6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateWO",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dueDate\": \"2022-02-20\",\n    \"description\": \"create a item 3\",\n    \"name\": \"test update 3\",\n    \"done\": false,\n    \"assignedTo\": \"JWT.PAYLOAD.SUB\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.eu-central-1.amazonaws.com/dev/workorder/79c5dd59-9e86-47e9-bb7e-d90b08537b64",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"eu-central-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"workorder",
+						"79c5dd59-9e86-47e9-bb7e-d90b08537b64"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GenerateUrl",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{authToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{apiId}}.execute-api.eu-central-1.amazonaws.com/dev/workorder/2ec5c2ef-1274-4f10-933e-9f3fb7af40a5/attachment",
+					"protocol": "https",
+					"host": [
+						"{{apiId}}",
+						"execute-api",
+						"eu-central-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"workorder",
+						"2ec5c2ef-1274-4f10-933e-9f3fb7af40a5",
+						"attachment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "apiId",
+			"value": ""
+		}
+	]
+}

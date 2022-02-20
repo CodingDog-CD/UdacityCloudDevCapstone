@@ -30,6 +30,7 @@ interface TodosState {
   loadingTodos: boolean
   description: string
   project: string
+  userId: string
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
@@ -38,7 +39,16 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     newTodoName: '',
     loadingTodos: true,
     description: '',
-    project: ''
+    project: '',
+    userId: ''
+  }
+
+  getUserId(): string {
+    const idToken = this.props.auth.getIdToken()
+    let jwt = require("jsonwebtoken")
+    const tokenPayload = jwt.decode(idToken)
+    const userId = tokenPayload.sub
+    return userId
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,9 +125,11 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   async componentDidMount() {
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
+      const userId = this.getUserId()
       this.setState({
         todos,
-        loadingTodos: false
+        loadingTodos: false,
+        userId
       })
     } catch (e) {
       alert(`Failed to fetch workorders: ${e}`)
@@ -128,6 +140,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     return (
       <div>
         <Header as="h1">TODOs</Header>
+        <h2>Welcome! Your user ID is: {this.state.userId}</h2>
 
         {this.renderCreateTodoInput()}
 
@@ -239,6 +252,15 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               {todo.attachmentUrl && (
                 <Image src={todo.attachmentUrl} size="small" wrapped />
               )}
+              <Grid.Column width={16}>
+                <Divider />
+              </Grid.Column>
+              <Grid.Column width={4} verticalAlign="middle">
+                Project: {todo.project}
+              </Grid.Column>
+              <Grid.Column width={12} verticalAlign="middle">
+                description: {todo.description}
+              </Grid.Column>
               <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>

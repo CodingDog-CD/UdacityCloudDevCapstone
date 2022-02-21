@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 import middy from '@middy/core'
 import cors from '@middy/http-cors'
-import { removeWorkOrder } from '../../functions/workorders'
+import { removeWorkOrder } from '../../functions/removeWorkOrder'
 import { getUserId } from "../utils"
 
 export const handler = middy (

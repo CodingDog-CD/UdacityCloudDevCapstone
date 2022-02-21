@@ -2,7 +2,7 @@ import middy from '@middy/core'
 import cors from '@middy/http-cors'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { CreateWorkorderRequest } from '../../requests/CreateWorkorderRequest'
-import { createWorkOrder } from '../../functions/workorders'
+import { createWorkOrder } from '../../functions/createWorkOrder'
 import httpErrorHandler  from '@middy/http-error-handler'
 import { getUserId } from '../utils'
 

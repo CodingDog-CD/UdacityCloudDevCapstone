@@ -3,7 +3,7 @@ import cors from '@middy/http-cors'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { UpdateWorkorder } from 'src/models/UpdateWorkOrder'
 import { UpdateWorkorderRequest } from 'src/requests/UpdateWorkorderRequest'
-import { updateWorkOrder } from '../../functions/workorders'
+import { updateWorkOrder } from '../../functions/updateWorkOrder'
 import { getUserId } from '../utils'
 
 export const handler = middy(

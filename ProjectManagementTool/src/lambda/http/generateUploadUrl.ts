@@ -1,4 +1,4 @@
-import { createAttachmentPresignedUrl } from "@functions/workorders";
+import { createAttachmentPresignedUrl } from "@functions/createAttachmentPresignedUrl";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import middy from '@middy/core'
 import cors from '@middy/http-cors'

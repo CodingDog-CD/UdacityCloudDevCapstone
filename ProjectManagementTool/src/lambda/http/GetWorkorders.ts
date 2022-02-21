@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda'
 import middy from '@middy/core'
-import { getWorkOrders } from '../../functions/workorders'
+import { getWorkOrders } from '../../functions/getWorkOrders'
 import { getUserId } from '../utils'
 import cors from '@middy/http-cors'
 
